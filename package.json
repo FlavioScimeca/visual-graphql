@@ -45,7 +45,6 @@
     "graphql": "^16.9.0",
     "solid-js": "^1.9.5",
     "svg-pan-zoom": "^3.6.2",
-    "terser": "^5.39.0",
     "ts-graphviz": "^2.1.6"
   },
   "peerDependencies": {
