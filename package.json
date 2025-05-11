@@ -1,0 +1,48 @@
+{
+  "name": "graphql-voyager-lite",
+  "private": false,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext ts,tsx",
+    "build:lib": "vite build --config vite.lib.config.ts"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
+    },
+    "./styles": "./dist/style.css"
+  },
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+  "dependencies": {
+    "graphql": "^16.9.0",
+    "solid-js": "^1.9.5",
+    "svg-pan-zoom": "^3.6.2",
+    "ts-graphviz": "^2.1.6"
+  },
+  "peerDependencies": {
+    "graphql": ">=16.0.0"
+  },
+  "devDependencies": {
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5",
+    "vite-plugin-solid": "^2.11.6",
+    "vite-plugin-dts": "^3.7.2",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-solid": "^0.13.1",
+    "@typescript-eslint/eslint-plugin": "^7.7.1",
+    "@typescript-eslint/parser": "^7.7.1"
+  }
+}

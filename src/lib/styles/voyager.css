@@ -1,0 +1,485 @@
+:root {
+  --voyager-primary: #1a59b7;
+  --voyager-secondary: #4a90e2;
+  --voyager-bg: #f7f7f7;
+  --voyager-border: #e0e0e0;
+  --voyager-text: #333333;
+  --voyager-text-light: #666666;
+  --voyager-panel-bg: #ffffff;
+  --voyager-node-bg: #e8f2ff;
+  --voyager-node-border: #1a59b7;
+  --voyager-edge: #4a90e2;
+  --voyager-hover: #f1f8ff;
+  --voyager-selected: #0366d6;
+  
+  /* Type-specific colors */
+  --voyager-object: #e8f2ff;
+  --voyager-interface: #e6fffb;
+  --voyager-union: #fff1f0;
+  --voyager-scalar: #f6ffed;
+  --voyager-input: #fcf4dc;
+  --voyager-enum: #f6e9ff;
+}
+
+.graphql-voyager {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Doc Panel */
+.doc-panel {
+  width: 320px;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--voyager-border);
+  background-color: var(--voyager-panel-bg);
+  overflow: hidden;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+.doc-panel .contents {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  padding: 0 10px;
+}
+
+/* Doc Explorer */
+.doc-explorer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.doc-explorer-title-bar {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  padding: 0 15px;
+  border-bottom: 1px solid #ddd;
+  background: #f7f7f7;
+}
+
+.doc-explorer-title {
+  flex: 1;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.doc-explorer-back {
+  cursor: pointer;
+  margin-right: 10px;
+  color: var(--voyager-primary);
+  padding: 5px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.doc-explorer-back:hover {
+  background-color: #e6e6e6;
+}
+
+.doc-explorer-contents {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 15px 15px 15px;
+}
+
+.doc-type-description {
+  margin: 15px 0;
+  padding: 8px;
+  background-color: var(--voyager-hover);
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.doc-category {
+  margin: 15px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.doc-category-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--voyager-text);
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+}
+
+.doc-category-item {
+  margin: 8px 0;
+  cursor: pointer;
+  color: var(--voyager-primary);
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.doc-category-item:hover {
+  background-color: var(--voyager-hover);
+}
+
+.field-name {
+  color: var(--voyager-primary);
+  font-weight: 500;
+}
+
+.type-name {
+  color: #CA9800;
+  cursor: pointer;
+}
+
+.type-name:hover {
+  text-decoration: underline;
+}
+
+.arg-name {
+  color: #8B2BB9;
+}
+
+/* Graph Viewport */
+.graph-viewport {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--voyager-bg);
+}
+
+/* Initial loading state */
+.initial-loading,
+.graph-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(247, 247, 247, 0.8);
+  z-index: 10;
+  color: var(--voyager-text);
+  font-size: 16px;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid var(--voyager-primary);
+  width: 40px;
+  height: 40px;
+  margin-bottom: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error display */
+.graph-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 80%;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #f5222d;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.graph-error h3 {
+  color: #f5222d;
+  margin-top: 0;
+}
+
+.graph-viewport svg {
+  width: 100%;
+  height: 100%;
+  cursor: move; /* Indicate the graph is draggable */
+  transition: background-color 0.3s ease;
+}
+
+/* Force-directed graph specific styles */
+.force-directed-graph {
+  background-color: var(--voyager-bg);
+}
+
+.graph-viewport .node {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.graph-viewport .node rect,
+.graph-viewport .node ellipse,
+.graph-viewport .node polygon {
+  stroke-width: 1.5px;
+  transition: all 0.2s ease;
+}
+
+.graph-viewport .node:hover rect,
+.graph-viewport .node:hover ellipse,
+.graph-viewport .node:hover polygon {
+  stroke-width: 2.5px;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.2));
+}
+
+.graph-viewport .node.selected rect,
+.graph-viewport .node.selected ellipse,
+.graph-viewport .node.selected polygon {
+  stroke-width: 3px;
+  stroke: var(--voyager-selected);
+  filter: drop-shadow(0 0 5px rgba(3, 102, 214, 0.5));
+}
+
+/* Pulse animation for focus effect */
+.graph-viewport .node.pulse rect,
+.graph-viewport .node.pulse ellipse,
+.graph-viewport .node.pulse polygon {
+  animation: pulse 1.5s ease-in-out;
+}
+
+@keyframes pulse {
+  0% { 
+    stroke-width: 1.5px;
+    filter: drop-shadow(0 0 0px rgba(3, 102, 214, 0));
+  }
+  50% { 
+    stroke-width: 4px;
+    filter: drop-shadow(0 0 8px rgba(3, 102, 214, 0.8));
+  }
+  100% { 
+    stroke-width: 1.5px;
+    filter: drop-shadow(0 0 0px rgba(3, 102, 214, 0));
+  }
+}
+
+.graph-viewport .edge {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.graph-viewport .edge path {
+  stroke-width: 1.2px;
+  transition: all 0.2s ease;
+}
+
+.graph-viewport .edge:hover path {
+  stroke-width: 2px;
+}
+
+.graph-viewport .edge:hover polygon {
+  fill: var(--voyager-selected);
+  stroke: var(--voyager-selected);
+}
+
+.graph-viewport .edge.selected polygon {
+  fill: var(--voyager-selected);
+  stroke: var(--voyager-selected);
+}
+
+/* Enhanced controls */
+.controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  transition: all 0.3s ease;
+}
+
+.controls button {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border: 1px solid var(--voyager-border);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--voyager-primary);
+  transition: all 0.2s ease;
+  padding: 0;
+  margin: 0;
+}
+
+.controls button:hover {
+  background-color: var(--voyager-hover);
+  color: var(--voyager-selected);
+}
+
+.controls button:active {
+  transform: scale(0.95);
+}
+
+.controls-help {
+  text-align: center;
+  font-size: 11px;
+  color: var(--voyager-text-light);
+  margin-top: 8px;
+  white-space: nowrap;
+}
+
+/* Custom node colors based on type */
+.graph-viewport .node[id$="OBJECT"] rect,
+.graph-viewport .node[data-kind="OBJECT"] rect {
+  fill: var(--voyager-object);
+}
+
+.graph-viewport .node[id$="INTERFACE"] rect,
+.graph-viewport .node[data-kind="INTERFACE"] rect {
+  fill: var(--voyager-interface);
+}
+
+.graph-viewport .node[id$="UNION"] rect,
+.graph-viewport .node[data-kind="UNION"] rect {
+  fill: var(--voyager-union);
+}
+
+.graph-viewport .node[id$="SCALAR"] rect,
+.graph-viewport .node[data-kind="SCALAR"] rect {
+  fill: var(--voyager-scalar);
+}
+
+.graph-viewport .node[id$="INPUT_OBJECT"] rect,
+.graph-viewport .node[data-kind="INPUT_OBJECT"] rect {
+  fill: var(--voyager-input);
+}
+
+.graph-viewport .node[id$="ENUM"] rect,
+.graph-viewport .node[data-kind="ENUM"] rect {
+  fill: var(--voyager-enum);
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --voyager-primary: #4d8cdd;
+    --voyager-secondary: #6ca4e9;
+    --voyager-bg: #1e1e1e;
+    --voyager-border: #3c3c3c;
+    --voyager-text: #e0e0e0;
+    --voyager-text-light: #b0b0b0;
+    --voyager-panel-bg: #2d2d2d;
+    --voyager-node-bg: #1e3a5f;
+    --voyager-node-border: #4d8cdd;
+    --voyager-edge: #6ca4e9;
+    --voyager-hover: #2c4b6e;
+    --voyager-selected: #61afef;
+    
+    /* Type-specific colors - darker versions */
+    --voyager-object: #1b3254;
+    --voyager-interface: #193f3d;
+    --voyager-union: #3d2d2c;
+    --voyager-scalar: #1e3a1d;
+    --voyager-input: #3b3628;
+    --voyager-enum: #2e233d;
+  }
+  
+  .initial-loading,
+  .graph-loading {
+    background-color: rgba(30, 30, 30, 0.8);
+    color: var(--voyager-text);
+  }
+  
+  .spinner {
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top: 4px solid var(--voyager-primary);
+  }
+  
+  .graph-error {
+    background-color: #2d2d2d;
+    border: 1px solid #ff4d4f;
+    color: #e0e0e0;
+  }
+  
+  .graph-error h3 {
+    color: #ff4d4f;
+  }
+  
+  .controls {
+    background-color: rgba(45, 45, 45, 0.9);
+  }
+  
+  .controls button {
+    background-color: #3c3c3c;
+    border: 1px solid #555;
+    color: #e0e0e0;
+  }
+  
+  .controls button:hover {
+    background-color: #4c4c4c;
+    color: var(--voyager-selected);
+  }
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+  .controls {
+    bottom: 10px;
+    right: 10px;
+  }
+  
+  .controls button {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+  
+  .initial-loading,
+  .graph-loading {
+    font-size: 14px;
+  }
+  
+  .spinner {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 15px;
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .graphql-voyager {
+    flex-direction: column;
+  }
+  
+  .doc-panel {
+    width: 100%;
+    height: 40%;
+    border-right: none;
+    border-bottom: 1px solid var(--voyager-border);
+  }
+  
+  .graph-viewport {
+    height: 60%;
+  }
+} 
