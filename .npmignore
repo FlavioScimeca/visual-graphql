@@ -1,0 +1,38 @@
+# Source
+src/*
+!src/lib
+
+# Tests
+**/*.test.*
+**/*.spec.*
+tests/
+coverage/
+
+# Development
+node_modules/
+.vscode/
+.github/
+.idea/
+.git/
+.gitignore
+.eslintrc*
+.prettierrc*
+tsconfig*.json
+vite.config.ts
+public/
+doc/
+example/
+examples/
+docs/
+
+# Build tools config
+postcss.config.*
+tailwind.config.*
+
+# Other
+**/*.log
+.DS_Store
+.env
+.env.*
+*.lock
+.cache/ 

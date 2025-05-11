@@ -423,7 +423,6 @@ export const GraphViewport: Component<GraphViewportProps> = (props) => {
       
       // Get current pan and zoom
       const pan = panZoomInstance.getPan();
-      const zoom = panZoomInstance.getZoom();
       
       // Calculate center position
       const centerX = containerRect.width / 2;

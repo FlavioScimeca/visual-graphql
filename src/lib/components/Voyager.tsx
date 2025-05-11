@@ -2,7 +2,6 @@ import { createSignal, onMount, Show, type Component } from "solid-js";
 import { createStore } from "solid-js/store";
 import { getSchema } from "../core/introspection";
 import { TypeGraph } from "../core/type-graph";
-import "../styles/voyager.css";
 import { typeNameToId } from "../utils/introspection-utils";
 import { DocExplorer } from "./DocExplorer";
 import { GraphViewport } from "./GraphViewport";

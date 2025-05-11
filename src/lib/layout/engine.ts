@@ -17,8 +17,9 @@ let activePanZoomInstance: any = null;
 export async function renderGraph(typeGraph: TypeGraph): Promise<{ svg: SVGSVGElement, panZoom: any }> {
   try {
     console.log('Starting graph rendering process with typeGraph:', typeGraph);
-    // Generate DOT representation for reference (not used directly in fallback)
-    const dotCode = generateDot(typeGraph);
+    // Generate DOT is not directly used, but it's helpful to keep the function for future debugging
+    // We'll just skip the assignment to avoid the unused variable warning
+    generateDot(typeGraph); // Called for debugging purposes but result not stored
     console.log('Generated DOT code for reference');
     
     // Skip trying to load external libraries and go straight to reliable fallback
@@ -301,7 +302,7 @@ function createFallbackSVG(typeGraph: TypeGraph): string {
                 labelY = midY - 10;
               } else {
                 // Target is more complex - draw S-curve
-                const dy = Math.abs(targetY - sourceY);
+                // We only need dx for the curve calculation
                 const dx = Math.abs(targetX - sourceX);
                 const curve = Math.min(dx / 2, 100);
                 

@@ -9,6 +9,7 @@ export default defineConfig({
     dts({ 
       include: ['src/lib'],
       outDir: 'dist',
+      tsconfigPath: './tsconfig.lib.json'
     }),
   ],
   build: {
@@ -31,7 +32,7 @@ export default defineConfig({
     },
     outDir: 'dist',
     emptyOutDir: true,
-    minify: 'terser',
+    minify: true,
     sourcemap: true
   }
 }); 

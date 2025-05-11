@@ -1,14 +1,31 @@
 {
-  "name": "graphql-voyager-lite",
+  "name": "visual-graphql",
   "private": false,
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "A lightweight GraphQL schema visualization tool built with SolidJS",
+  "license": "MIT",
   "type": "module",
+  "author": "Flavio Scimeca",
+  "homepage": "https://github.com/FlavioScimeca/visual-graphql",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FlavioScimeca/visual-graphql"
+  },
+  "keywords": [
+    "graphql",
+    "schema",
+    "visualization",
+    "voyager",
+    "solidjs",
+    "introspection"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint src --ext ts,tsx",
-    "build:lib": "vite build --config vite.lib.config.ts"
+    "build:lib": "vite build --config vite.lib.config.ts",
+    "prepublishOnly": "npm run build:lib"
   },
   "files": [
     "dist"
@@ -18,15 +35,17 @@
       "import": "./dist/index.es.js",
       "require": "./dist/index.umd.js"
     },
-    "./styles": "./dist/style.css"
+    "./styles": "./dist/visual-graphql.css"
   },
   "main": "./dist/index.umd.js",
   "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",
   "dependencies": {
+    "@types/node": "^22.15.17",
     "graphql": "^16.9.0",
     "solid-js": "^1.9.5",
     "svg-pan-zoom": "^3.6.2",
+    "terser": "^5.39.0",
     "ts-graphviz": "^2.1.6"
   },
   "peerDependencies": {
