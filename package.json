@@ -1,7 +1,7 @@
 {
   "name": "visual-graphql",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A lightweight GraphQL schema visualization tool built with SolidJS",
   "license": "MIT",
   "type": "module",
